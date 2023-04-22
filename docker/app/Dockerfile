@@ -5,7 +5,7 @@ ENV ROOT="/var/www"
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Tokyo
 
-WORKDIR "${ROOT}/rails"
+WORKDIR "${ROOT}/html-css-try"
 
 COPY Gemfile Gemfile.lock ${ROOT}
 
@@ -34,7 +34,7 @@ RUN apk update && \
     tzdata \
     bash
 
-WORKDIR "${ROOT}/rails"
+WORKDIR "${ROOT}/html-css-try"
 
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY . ${ROOT}
