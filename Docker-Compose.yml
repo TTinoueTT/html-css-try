@@ -16,6 +16,7 @@ services:
       web_segment:
         ipv4_address: 172.10.0.4
   app:
+    platform: linux/amd64
     container_name: html_css_try
     build:
       context: .

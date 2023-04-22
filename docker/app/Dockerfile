@@ -1,11 +1,11 @@
 # ベースとなるイメージの指定（rubyのバージョン3.0.3を指定）
-FROM ruby:3.2.2-alpine3.17
+FROM ruby:3.2.2-alpine3.17 as builder
 
-ENV ROOT="/app"
+ENV ROOT="/var/www"
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Tokyo
 
-WORKDIR ${ROOT}
+WORKDIR "${ROOT}/rails"
 
 COPY Gemfile Gemfile.lock ${ROOT}
 
@@ -21,23 +21,27 @@ RUN apk add \
 RUN gem install bundler
 RUN bundle install
 
-# ビルド時に実行するコマンドの指定
-# インストール可能なパッケージの一覧の更新
-# RUN apt-get update -qq \
-#     # パッケージのインストール（nodejs、postgresql-client、npmを指定）
-#     && apt-get install -y nodejs postgresql-client npm \
-#     && rm -rf /var/lib/apt/lists/* \
-#     && npm install --global yarn
+# ② のマルチステージビルド
+FROM ruby:3.2.2-alpine3.17
 
-# # 作業ディレクトリの指定
-# WORKDIR /myapp
-# COPY Gemfile /myapp/Gemfile
-# COPY Gemfile.lock /myapp/Gemfile.lock
-# RUN bundle install
-# # Add a script to be executed every time the container starts.
-# COPY entrypoint.sh /usr/bin/
-# RUN chmod +x /usr/bin/entrypoint.sh
-# ENTRYPOINT ["entrypoint.sh"]
-# EXPOSE 3000
-# # Configure the main process to run when running the image
-# CMD ["rails", "server", "-b", "0.0.0.0"]
+ENV ROOT="/var/www"
+ENV LANG=C.UTF-8
+ENV TZ=Asia/Tokyo
+
+RUN apk update && \
+    apk add \
+    mysql-dev \
+    tzdata \
+    bash
+
+WORKDIR ${ROOT}
+
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY . ${ROOT}
+COPY entrypoint.sh /usr/bin/
+
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+EXPOSE 3000
+
+CMD ["rails", "server", "-b", "0.0.0.0"]
