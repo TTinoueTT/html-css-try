@@ -34,7 +34,7 @@ RUN apk update && \
     tzdata \
     bash
 
-WORKDIR ${ROOT}
+WORKDIR "${ROOT}/rails"
 
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY . ${ROOT}
