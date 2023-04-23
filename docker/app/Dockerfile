@@ -1,3 +1,4 @@
+# ① bundle install をするためのビルド
 # ベースとなるイメージの指定（rubyのバージョン3.0.3を指定）
 FROM ruby:3.2.2-alpine3.17 as builder
 
@@ -7,7 +8,7 @@ ENV TZ=Asia/Tokyo
 
 WORKDIR "${ROOT}/html-css-try"
 
-COPY Gemfile Gemfile.lock ${ROOT}
+COPY Gemfile Gemfile.lock ${WORKDIR}
 
 RUN apk add \
     alpine-sdk \
@@ -21,27 +22,30 @@ RUN apk add \
 RUN gem install bundler
 RUN bundle install
 
-# ② のマルチステージビルド
-FROM ruby:3.2.2-alpine3.17
+# ② のマルチステージビルド 最初のビルドの時は、
+# これ以降のコードをコメントアウト
+#
 
-ENV ROOT="/var/www"
-ENV LANG=C.UTF-8
-ENV TZ=Asia/Tokyo
+# FROM ruby:3.2.2-alpine3.17
 
-RUN apk update && \
-    apk add \
-    mysql-dev \
-    tzdata \
-    bash
+# ENV ROOT="/var/www"
+# ENV LANG=C.UTF-8
+# ENV TZ=Asia/Tokyo
 
-WORKDIR "${ROOT}/html-css-try"
+# RUN apk update && \
+#     apk add \
+#     mysql-dev \
+#     tzdata \
+#     bash
 
-COPY --from=builder /usr/local/bundle /usr/local/bundle
-COPY . ${ROOT}
-COPY entrypoint.sh /usr/bin/
+# WORKDIR "${ROOT}/html-css-try"
 
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
+# COPY --from=builder /usr/local/bundle /usr/local/bundle
+# COPY . ${ROOT}
+# COPY entrypoint.sh /usr/bin/
 
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# RUN chmod +x /usr/bin/entrypoint.sh
+# ENTRYPOINT ["entrypoint.sh"]
+# EXPOSE 3000
+
+# CMD ["rails", "server", "-b", "0.0.0.0"]

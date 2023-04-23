@@ -3,7 +3,9 @@ version: '3.9'
 services:
 
   db:
+    platform: linux/amd64
     image: mysql:8.0
+    container_name: html_css_try
     command: --innodb-use-native-aio=0
     environment:
       MYSQL_ROOT_PASSWORD: password
