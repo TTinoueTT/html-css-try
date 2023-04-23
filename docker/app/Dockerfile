@@ -8,7 +8,8 @@ ENV TZ=Asia/Tokyo
 
 WORKDIR "${ROOT}/html-css-try"
 
-COPY Gemfile Gemfile.lock ${WORKDIR}
+COPY Gemfile ${WORKDIR}
+COPY Gemfile.lock ${WORKDIR}
 
 RUN apk add \
     alpine-sdk \
@@ -41,7 +42,7 @@ RUN bundle install
 # WORKDIR "${ROOT}/html-css-try"
 
 # COPY --from=builder /usr/local/bundle /usr/local/bundle
-# COPY . ${ROOT}
+## COPY . ${ROOT}
 # COPY entrypoint.sh /usr/bin/
 
 # RUN chmod +x /usr/bin/entrypoint.sh
