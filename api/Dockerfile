@@ -4,7 +4,7 @@ FROM ruby:3.2.2-alpine3.17 as builder
 ARG WORKDIR
 
 # コンテナ内で利用する環境変数を定義
-ENV RUNTIME_PACKAGES="linux-headers libxml2-dev make gcc libc-dev nodejs tzdata mysql-client mysql-dev bash git" \
+ENV RUNTIME_PACKAGES="linux-headers libxml2-dev make gcc libc-dev nodejs tzdata mysql-client mysql-dev sqlite-dev bash git" \
     # "linux-headers libxml2-dev make gcc libc-dev nodejs tzdata postgresql-dev postgresql git"
     # alpine-sdk sqlite-dev mysql-client mysql-dev bash # これらをインストール必要か検討、postgresqlを使用しないでどうするか。
     DEV_PACKAGES="build-base curl-dev" \

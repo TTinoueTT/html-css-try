@@ -17,6 +17,7 @@ Practice repository for HTML and CSS experimentation.
 > rails new は皆さんは実際には行わないです
 > しかし、このプロジェクトが作られた時以下のコマンドを実行して,
 > rails プロジェクトを作成したことを知っておいてください。
+`docker compose run --rm api rails new . -f -B --api`
 
 `rails new . -f -B --api`
 > このコマンドの説明
