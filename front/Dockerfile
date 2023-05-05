@@ -17,9 +17,31 @@ ENV HOME=/${WORKDIR} \
 RUN echo ${HOME}
 RUN echo ${CONTAINER_PORT}
 
+
+
 WORKDIR ${HOME}
 
 EXPOSE ${CONTAINER_PORT}
+
+# pnpm を使った高速化を行う為の追加の記述
+# RUN npm install -g pnpm　①
+# 他にも検討段階のコマンドを上げていく
+# RUN pnpm create vite my-vue-app --template vue-ts
+# RUN pnpm create nuxt-app .
+# RUN pnpm add --dev nuxt-vite
+# RUN npx nuxi init nuxt3-app # ②
+
+# nuxt.config.js に追記
+# export default {
+# ...
+# buildModules: [
+# // https://go.nuxtjs.dev/typescript
+# '@nuxt/typescript-build',
+# 'nuxt-vite' // 追加
+# ],
+# ...
+# }
+
 
 # 2021.12.13追記
 # FROM node:14.15.1-alpine
