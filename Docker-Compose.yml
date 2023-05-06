@@ -23,13 +23,14 @@ services:
       - db
     ports:
       - "$API_PORT:$CONTAINER_PORT"
+
   front:
     build:
       context: ./front  # build context の指定 Dockerfile の場所
       args:
         WORKDIR: $WORKDIR
         CONTAINER_PORT: $CONTAINER_PORT
-    command: yarn run dev
+    command: pnpm run dev
     volumes:
       - ./front:/$WORKDIR
     ports:

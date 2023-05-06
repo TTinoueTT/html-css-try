@@ -1,4 +1,4 @@
-FROM node:20.0-alpine3.17
+FROM node:18.16-alpine3.17
 
 # docker-compose.yml で指定した、build時に渡す変数のキーで受け取り実行
 ARG WORKDIR
@@ -23,6 +23,14 @@ WORKDIR ${HOME}
 
 EXPOSE ${CONTAINER_PORT}
 
+RUN npm install -g pnpm
+
+# RUN pnpm dlx nuxi init app
+
+# RUN pnpm install
+
+
+
 # pnpm を使った高速化を行う為の追加の記述
 # RUN npm install -g pnpm　①
 # 他にも検討段階のコマンドを上げていく
@@ -30,6 +38,7 @@ EXPOSE ${CONTAINER_PORT}
 # RUN pnpm create nuxt-app .
 # RUN pnpm add --dev nuxt-vite
 # RUN npx nuxi init nuxt3-app # ②
+# RUN npx nuxi init . # ②
 
 # nuxt.config.js に追記
 # export default {
