@@ -13,11 +13,12 @@ Practice repository for HTML and CSS experimentation.
 >
 `docker compose build --no-cache`
 
-### rails new
+### rails API の作成
+#### rails new
 > rails new は皆さんは実際には行わないです
 > しかし、このプロジェクトが作られた時以下のコマンドを実行して,
 > rails プロジェクトを作成したことを知っておいてください。
-`docker compose run --rm api rails new . -f -B --api -G`
+`docker compose run --rm api rails new . -f -B --api -d mysql`
 
 `rails new . -f -B --api`
 > このコマンドの説明
@@ -26,7 +27,7 @@ Practice repository for HTML and CSS experimentation.
 - `-B` は `bundle install` を実行しない
 - ここでは実行していないが、`-d データベース名`、例えば、`-d postgresql`などで使用するDBシステムを指定できる、デフォルトが `sqlite3`
 - `--api` で、API専用のRailsアプリケーションを作成する
-- `-G` は、.gitignoreの生成をなくす
+<!-- - `-G` は、.gitignoreの生成をなくす -->
 
 > コマンドを実行することで、Gemfile が Rails専用に書き換わる
 #### --api オプションについて
@@ -34,6 +35,20 @@ Practice repository for HTML and CSS experimentation.
 > `ApplicationController` が通常の `ActionController::Base` ではなく、`AcrionController::API` を継承する
 > ビュー、ヘルパー、アセットを生成しないようにジェネレータを設定している
 
+#### Gemfile の更新を確認/ Dockerイメージを再ビルド
+> `rails new` により、Gemfile が書き換わる
+> その為、再度イメージの再ビルドを行う `docker compose build api`
+
+#### アプリの起動を確認
+> コンテナを起動させて、ブラウザでの接続を確認
+`docker compose up api` => .env に書かれているポートでプラウザでの実行状態を確認(mysql のコネクションエラーであれば大丈夫)
+
+#### DBコンテナへの接続
+> apiコンテナにDBに必要な値を、環境変数から渡す
+> database.yml を mysqlコンテナに接続できるように書き換え
+
+> そして、この設定でコンテナを再度起動
+`docker compose run --rm api rails db:create`
 
 
 ### front ディレクトリに nuxt.js のプロジェクトを作成する
@@ -56,12 +71,6 @@ rmdir front/app
 docker compose run --rm front pnpm install
 ```
 
-
-
-
-
-
-─│┬┴ ┼├ ┤└ ┘┌ ┐
 ## git のサブモジュール管理
 ### git管理の全体像
 ```:ディレクトリ階層の図
@@ -86,5 +95,5 @@ Gitリポジトリを3つ用意して、それぞれは以下の役割とする
 ① api ディレクトリの変更を、apiリポジトリにコミットする
 ② そのメインリポジトリである、root リポジトリでも api ディレクトリのコミットを受けて、コミットする
 
-api と　front をモジュールとして、管理してrootで運用していく
+api と front をモジュールとして、管理してrootで運用していく
 リポジトリが独立していて変更を各ディレクトリでコミットしておく
