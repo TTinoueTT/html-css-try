@@ -69,6 +69,10 @@ rmdir front/app
 
 # package.json で nuxt のバージョンを 3.2 にする
 docker compose run --rm front pnpm install
+
+docker compose up front
+
+# でコンテナが起動されて、nuxtの起動できているか http://localhost:8030/ で動いているか確認する
 ```
 
 ## git のサブモジュール管理
