@@ -59,6 +59,8 @@ Practice repository for HTML and CSS experimentation.
 # docker compose run --rm front npx nuxi init app
 
 docker compose run --rm front pnpm dlx nuxi init app
+# package.json で nuxt のバージョンを 3.2 にする
+docker compose run --rm front sh -c "cd nuxt-app && pnpm install"
 
 # コンテナ起動 nuxt.js のプロジェクト作成、
 # デフォルトでnuxt-app ディレクトリ配下にプロジェクトの中身が作られる
@@ -67,7 +69,10 @@ docker compose run --rm front pnpm dlx nuxi init app
 mv front/app/{*,.*} front
 rmdir front/app
 
-# package.json で nuxt のバージョンを 3.2 にする
+# package.json で以下を指定
+# "@types/node": "18.11.9",
+# "nuxt": "^3.4.1"
+
 docker compose run --rm front pnpm install
 
 docker compose up front
@@ -91,7 +96,7 @@ Gitリポジトリを3つ用意して、それぞれは以下の役割とする
 
 > root リポジトリが html_css_try の直下のファイルを管理して、その配下の /api、/front
 > のディレクトリを api リポジトリ、 front リポジトリとして別で管理する
-> この２つのリポジトリをサブモジュールとして、rootリポジトリが扱う
+> この２つのリポジトリをサブモジュールとして、rootリポジトリで管理する
 
 ### サブモジュールとして管理
 サブモジュール …別プロジェクトの変更(コミット)をメインのプロジェクトに紐づけるGit機能の一つ
@@ -101,3 +106,15 @@ Gitリポジトリを3つ用意して、それぞれは以下の役割とする
 
 api と front をモジュールとして、管理してrootで運用していく
 リポジトリが独立していて変更を各ディレクトリでコミットしておく
+
+### サブモジュールを作成していく手順
+1. rootリポジトリ、apiリポジトリ、frontリポジトリをあらかじめ github で作成
+2. root階層で `git submodule add https://github.com/TTinoueTT/html-css-try-api.git api` のようにしてサブモジュールを api ディレクトリにクローンする
+3. 同様に frot もクローンする
+4. 各サブモジュールでブランチと、リモートブランチの設定を行う
+
+> ブランチの設定
+- サブモジュールのディレクトリで既存のmainブランチを更新する `git branch -M main main-api` や `git branch -M main main-front`
+- `git remote -v` でリモートブランチの設定値を確認、例えば、gitアカウントを複数管理している場合は
+    `git remote set-url リモート名 変更したいURL`で指定のURLで登録を行う
+    `git remote set-url origin git@my-private-github:TTinoueTT/html-css-try-front.git`のようにして
