@@ -2,3 +2,9 @@
 [submodule "front"]
 	path = front
 	url = https://github.com/TTinoueTT/html-css-try-front.git
+[submodule "api"]
+	path = api
+	url = https://github.com/TTinoueTT/html-css-try-api.git
+[submodule "api_cp"]
+	path = api_cp
+	url = https://github.com/TTinoueTT/html-css-try-api.git
